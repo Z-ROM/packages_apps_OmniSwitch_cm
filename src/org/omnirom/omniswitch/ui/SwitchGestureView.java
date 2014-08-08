@@ -524,7 +524,7 @@ public class SwitchGestureView implements OnShowcaseEventListener {
         Point size = new Point();
         mWindowManager.getDefaultDisplay().getSize(size);
 
-        mShowcaseView = ShowcaseView.insertShowcaseView(mConfiguration.mLocation == 1 ? 0 : size.x, 
+        mShowcaseView = ShowcaseView.insertShowcaseView(mConfiguration.mLocation == 1 ? 0 : size.x,
                 mConfiguration.getCurrentOffsetStart() + (mConfiguration.getCurrentOffsetEnd() - mConfiguration.getCurrentOffsetStart())/2, mWindowManager, mContext,
                 R.string.sc_drag_handle_title, R.string.sc_drag_handle_body, co);
 
@@ -1248,28 +1248,6 @@ public class SwitchGestureView implements OnShowcaseEventListener {
                 @Override
                 public void run() {
                     mRecentsManager.killOther(false);
-                }});
-            return item;
-        }
-        if (buttonId == SettingsActivity.BUTTON_SPEED_SWITCH_IMMERSIVE_MODE){
-            item = getPackageItemTemplate();
-            d = mContext.getResources().getDrawable(R.drawable.immersive_mode);
-            item.setSmallImage(BitmapUtils.shadow(mContext.getResources(), d));
-
-            d = BitmapUtils.resize(mContext.getResources(),
-                    d,
-                    mConfiguration.mActionIconSize,
-                    mConfiguration.mIconBorder,
-                    mConfiguration.mDensity);
-            item.setOriginalImage(BitmapUtils.shadow(mContext.getResources(), d));
-
-            item.setLabel(mContext.getResources().getString(R.string.immersive_mode_help));
-            item.setAction(new Runnable(){
-                @Override
-                public void run() {
-                    if (!mConfiguration.mRestrictedMode){
-                        Utils.toggleImmersiveMode(mContext);
-                    }
                 }});
             return item;
         }

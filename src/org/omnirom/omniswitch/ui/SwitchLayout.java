@@ -100,7 +100,6 @@ public class SwitchLayout implements OnShowcaseEventListener {
     private PackageTextView mSettingsButton;
     private PackageTextView mAllappsButton;
     private PackageTextView mBackButton;
-    private PackageTextView mImmersiveModeButton;
     private RecentListAdapter mRecentListAdapter;
     private FavoriteListAdapter mFavoriteListAdapter;
     private List<TaskDescription> mLoadedTasks;
@@ -161,7 +160,7 @@ public class SwitchLayout implements OnShowcaseEventListener {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TaskDescription ad = mLoadedTasks.get(position);
-            
+
             PackageTextView item = null;
             if (convertView == null){
                 item = getRecentItemTemplate();
@@ -645,7 +644,7 @@ public class SwitchLayout implements OnShowcaseEventListener {
         if (mPopupView == null){
             createView();
         }
-        
+
         initView();
 
         if(DEBUG){
@@ -659,7 +658,7 @@ public class SwitchLayout implements OnShowcaseEventListener {
             mWindowManager.removeView(mPopupView);
             mWindowManager.addView(mPopupView, getParams(mConfiguration.mBackgroundOpacity));
         }
-        
+
 
         if (mConfiguration.mAnimate) {
             toggleOverlay(true);
@@ -798,7 +797,7 @@ public class SwitchLayout implements OnShowcaseEventListener {
         }
 
         params.gravity = Gravity.TOP | getHorizontalGravity();
-        params.y = mConfiguration.getCurrentOffsetStart() 
+        params.y = mConfiguration.getCurrentOffsetStart()
                 + mConfiguration.mDragHandleHeight / 2
                 - mConfiguration.mMaxHeight / 2
                 - (mButtonsVisible ? mConfiguration.mMaxHeight : 0);
@@ -1041,7 +1040,7 @@ public class SwitchLayout implements OnShowcaseEventListener {
     @Override
     public void onShowcaseViewShow(ShowcaseView showcaseView) {
     }
-    
+
     public void updateLayout() {
         try {
             if (mShowing){
@@ -1066,7 +1065,7 @@ public class SwitchLayout implements OnShowcaseEventListener {
             // ignored
         }
     }
-    
+
     private void setButtonGlow(ImageButton button, int state, boolean enable){
         if(enable){
             if(state ==0){
@@ -1623,54 +1622,6 @@ public class SwitchLayout implements OnShowcaseEventListener {
                 }
             });
             return mBackButton;
-        }
-
-        if (buttonId == SettingsActivity.BUTTON_IMMERSIVE_MODE){
-            mImmersiveModeButton = getPackageItemActionTemplate();
-            if (mConfiguration.mFlatStyle) {
-//                mImmersiveModeButton.setOriginalImage(BitmapUtils.colorize(mContext.getResources(), Color.BLACK, mContext.getResources().getDrawable(R.drawable.immersive_mode)));
-                mImmersiveModeButton.setOriginalImage(mContext.getResources().getDrawable(R.drawable.immersive_mode));
-            } else {
-                mImmersiveModeButton.setOriginalImage(BitmapUtils.shadow(mContext.getResources(), mContext.getResources().getDrawable(R.drawable.immersive_mode)));
-            }
-            mImmersiveModeButton.setGlowImage(BitmapUtils.glow(mContext.getResources(),
-                    mConfiguration.mGlowColor,
-                    mContext.getResources().getDrawable(R.drawable.immersive_mode)));
-
-            mImmersiveModeButton.setOnTouchListener(new View.OnTouchListener(){
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if(event.getAction()==MotionEvent.ACTION_DOWN){
-                        mImmersiveModeButton.setBackground(mImmersiveModeButton.getGlowImage());
-                    } else if(event.getAction()==MotionEvent.ACTION_UP){
-                        mImmersiveModeButton.setBackground(mImmersiveModeButton.getOriginalImage());
-                    } else if(event.getAction()==MotionEvent.ACTION_CANCEL){
-                        mImmersiveModeButton.setBackground(mImmersiveModeButton.getOriginalImage());
-                    }
-                    v.onTouchEvent(event);
-                    return true;
-                }});
-
-            mImmersiveModeButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    if (!mConfiguration.mRestrictedMode){
-                        Utils.toggleImmersiveMode(mContext);
-                        if (mAutoClose){
-                            mRecentsManager.close();
-                        }
-                    }
-                }
-            });
-            mImmersiveModeButton.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Toast.makeText(mContext,
-                            mContext.getResources().getString(R.string.immersive_mode_help),
-                            Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-            });
-            return mImmersiveModeButton;
         }
         return null;
     }
